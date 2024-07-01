@@ -1,0 +1,45 @@
+def caesar_cipher(text, shift, direction):
+    result = ""
+    
+    # Adjust shift if decryption is needed
+    if direction == "decrypt":
+        shift = -shift
+    
+    # Traverse the text
+    for char in text:
+        if char.isalpha():
+            # Shift character by shift positions
+            shift_base = 65 if char.isupper() else 97
+            result += chr((ord(char) - shift_base + shift) % 26 + shift_base)
+        else:
+            # Non-alphabet characters are added as is
+            result += char
+    
+    return result
+
+def main():
+    encrypted_message = None
+    
+    while True:
+        if encrypted_message is None:
+            message = input("Enter the message to encrypt: ")
+            shift = int(input("Enter the shift value: "))
+            encrypted_message = caesar_cipher(message, shift, "encrypt")
+            print(f"The encrypted message is: {encrypted_message}")
+        else:
+            choice = input("Do you want to 'encrypt' another message or 'decrypt' the previous one? (Type 'encrypt' or 'decrypt'): ").lower()
+            if choice == "encrypt":
+                message = input("Enter the message to encrypt: ")
+                shift = int(input("Enter the shift value: "))
+                encrypted_message = caesar_cipher(message, shift, "encrypt")
+                print(f"The encrypted message is: {encrypted_message}")
+            elif choice == "decrypt":
+                shift = int(input("Enter the shift value used for encryption: "))
+                decrypted_message = caesar_cipher(encrypted_message, shift, "decrypt")
+                print(f"The decrypted message is: {decrypted_message}")
+                encrypted_message = None  # Reset after decryption
+            else:
+                print("Invalid choice. Please type 'encrypt' or 'decrypt'.")
+
+if __name__ == "__main__":
+    main()
